@@ -23,6 +23,8 @@ public class ProductDomain {
     @NotNull
     private String image;
 
+    private boolean featured;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class ProductDomain {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
     }
 }
