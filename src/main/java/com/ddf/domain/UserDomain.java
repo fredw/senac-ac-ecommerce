@@ -20,6 +20,10 @@ public class UserDomain {
     @NotNull
     private String password;
 
+    @ManyToOne
+    @NotNull
+    private RoleDomain role;
+
     public Long getId() {
         return id;
     }
@@ -50,5 +54,13 @@ public class UserDomain {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public RoleDomain getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDomain role) {
+        this.role = role;
     }
 }

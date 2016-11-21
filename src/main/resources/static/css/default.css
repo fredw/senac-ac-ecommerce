@@ -1,6 +1,103 @@
+
+/*  ==================================================================
+    Layout
+    ================================================================== */
+
+.menu .cart {
+    background: #3c3c3c;
+    color: #FFF !important;
+}
+
+.menu .cart:hover {
+    background: #4A4A4A !important;
+}
+
 .footer {
-    padding: 15px 0;
+    margin-top: 30px;
+    padding: 15px;
     background: #000;
     color: #AAA;
     text-align: center;
+}
+
+.footer .essay {
+    font-size: .9em;
+}
+
+.footer .copyright {
+    font-size: .9em;
+    color: #666;
+}
+
+
+/*  ==================================================================
+    Products
+    ================================================================== */
+
+.products .product {
+    text-align: justify;
+    margin-bottom: 30px;
+}
+
+.products .product img {
+    margin-bottom: 10px;
+}
+
+.products .product .name {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.products .product .description {
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.products .product .price {
+    font-weight: bold;
+}
+
+.products .product .price strong {
+    color: #079114;
+}
+
+
+/*  ==================================================================
+    Panel
+    ================================================================== */
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto 60px;
+}
+
+.form-signin .form-signin-heading {
+    margin-bottom: 10px;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }

@@ -3,12 +3,30 @@
 <head>
 </head>
 <body>
-    <div class="navbar navbar-inverse" th:fragment="header">
+    <div class="navbar navbar-inverse menu" th:fragment="header">
         <div class="container">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#" th:href="@{/}">Home</a></li>
-                    <li><a href="#" th:href="@{/produtos}">Produtos</a></li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
+                        <a href="#" th:href="@{/}">Home</a>
+                    </li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/produtos' ? 'active' : ''}">
+                        <a href="#" th:href="@{/produtos}">Produtos</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a th:href="@{/carrinho}" title="Entrar">Entrar</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/carrinho}" title="Cadastrar">Cadastrar</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/carrinho}" title="Ver carrinho de compras" class="cart">
+                            <i class="glyphicon glyphicon-shopping-cart"></i>
+                            Carrinho
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

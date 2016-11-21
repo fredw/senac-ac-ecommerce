@@ -4,8 +4,19 @@
 </head>
 <body>
     <div th:fragment="footer" class="footer">
-        <p>Desenvolvido por: Diego Weiler, Diogo Ottequir e Frederico Wuerges Becker</p>
-        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}" th:remove="tag">2016</span></p>
+        <p><strong>Desenvolvido por: Diego Weiler, Diogo Ottequir e Frederico Wuerges Becker</strong></p>
+        <p class="essay">SENAC Blumenau - Análise e Desenvolvimento de Software<br/>Trabalho de Atividade Complementar 4&deg; Semestre</p>
+        <p class="copyright">&copy; <span th:text="${#dates.year(#dates.createNow())}" th:remove="tag">2016</span> - Todos direitos reservados</p>
+        <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"
+        ></script>
     </div>
 </body>
 </html>
