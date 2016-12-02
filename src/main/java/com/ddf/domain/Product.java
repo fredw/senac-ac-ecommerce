@@ -1,27 +1,38 @@
 package com.ddf.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "product")
-public class ProductDomain {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @NotNull
+    @NotNull(message = "The code must not be null")
+    @Min(value = 3, message = "Code must be at least 3 characters")
+    @Max(value = 10, message = "Code must be a maximum of 10 characters")
+    @Column(unique = true)
+    private String code;
+
+    @NotNull(message = "The name must not be null")
     private String name;
 
-    @NotNull
+    @NotNull(message = "The description must not be null")
     private String description;
 
-    @NotNull
+    @NotNull(message = "The price must not be null")
     private Double price;
 
-    @NotNull
+    @NotNull(message = "The image must not be null")
     private String image;
+
+    @NotNull(message = "The file must not be null")
+    private String file;
 
     private boolean featured;
 
@@ -31,6 +42,14 @@ public class ProductDomain {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -63,6 +82,14 @@ public class ProductDomain {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     public boolean isFeatured() {

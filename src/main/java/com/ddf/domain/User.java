@@ -4,25 +4,24 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user")
-public class UserDomain {
+public class User {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @NotNull
+    @NotNull(message = "The name must not be null")
     private String name;
 
-    @NotNull
+    @NotNull(message = "The email must not be null")
     private String email;
 
-    @NotNull
+    @NotNull(message = "The password must not be null")
     private String password;
 
     @ManyToOne
-    @NotNull
-    private RoleDomain role;
+    @NotNull(message = "The role must not be null")
+    private Role role;
 
     public Long getId() {
         return id;
@@ -56,11 +55,11 @@ public class UserDomain {
         this.password = password;
     }
 
-    public RoleDomain getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(RoleDomain role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

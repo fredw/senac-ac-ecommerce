@@ -4,9 +4,107 @@
     <title>Produtos</title>
 </head>
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="content" class="cart">
         <h1>Carrinho de Compras</h1>
-        ...
+        <!--/*@thymesVar id="cart" type="com.ddf.domain.Cart"*/-->
+        <div th:if="${#lists.isEmpty(cart.getItems())}" class="alert alert-info col-md-12">
+            Nenhum produto adicionado no carrinho de compras.
+        </div>
+        <div class="clearfix"></div>
+        <form action="" th:if="${!#lists.isEmpty(cart.getItems())}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="100" class="text-center">#</th>
+                        <th>Produto</th>
+                        <th width="100" class="text-center">Quantidade</th>
+                        <th width="150" class="text-center">Preço</th>
+                        <th width="190" class="text-center">Total</th>
+                        <th width="50" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--/*@thymesVar id="cartItem" type="com.ddf.domain.CartItem"*/-->
+                    <tr th:each="cartItem: ${cart.getItems()}">
+                        <td class="text-center" th:text="${cartItem.getProduct().getCode()}"></td>
+                        <td th:text="${cartItem.getProduct().getName()}"></td>
+                        <td class="text-center">
+                            <input type="number" name="quantity[]" title="Quantidade" step="1" min="1" max="99" class="form-control text-center quantity" th:value="${cartItem.getQuantity()}"/>
+                        </td>
+                        <td class="text-center">
+                            <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text" name="price[]" title="Preço" class="form-control text-right price" readonly="readonly" th:value="${cartItem.getPrice()}"/>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text" name="total[]" title="Total" class="form-control text-right total" readonly="readonly" th:value="${cartItem.getQuantity() * cartItem.getPrice()}"/>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <a href="javascript:" title="Remover produto" class="btn btn-default btn-small btn-remove" th:attr="data-product-code=${cartItem.getProduct().getCode()}">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text" name="cart-total" title="Valor total do carrinho" class="form-control text-right" readonly="readonly" th:value="${#numbers.formatDecimal(cart.getTotal(), 1, 2, 'POINT')}"/>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <script>
+
+                var cartTotal = function () {
+                    var total = 0;
+                    $('.total').each(function ($input) {
+                        total += $input.val();
+                    });
+                    $('.cart-total').val(total.toFixed(2));
+                };
+
+                $(function() {
+                    var $quantity = $('.quantity');
+                    $quantity.on('change', function (e) {
+                        var total = ($('.price').val() * $quantity.val()).toFixed(2);
+                        $('.total').val(total);
+                    });
+
+                    $('.btn-remove').on('click', function (e) {
+                        e.preventDefault();
+                        var $row = $(this).parents('tr');
+                        $.ajax({
+                            method: 'post',
+                            url: '/cart/remove/' + $(this).data('product-code'),
+                            contentType: 'application/json',
+                            dataType: 'json'
+                        })
+                        .done(function (data) {
+                            if (data.success) {
+                                $row.remove();
+                                window.location.reload();
+                            } else {
+                                alert('Problema ao adicionar produto ao carrinho!')
+                            }
+                        });
+                    });
+                });
+
+            </script>
+        </form>
     </div>
 </body>
 </html>

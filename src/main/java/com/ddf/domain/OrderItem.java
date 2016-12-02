@@ -2,28 +2,26 @@ package com.ddf.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
-@Table(name = "order_item")
-public class OrderItemDomain {
+public class OrderItem {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @NotNull
-    private OrderDomain order;
+    @NotNull(message = "The order must not be null")
+    private Order order;
 
     @ManyToOne
-    @NotNull
-    private ProductDomain product;
+    @NotNull(message = "The product must not be null")
+    private Product product;
 
-    @NotNull
+    @NotNull(message = "The quantity must not be null")
     private int quantity;
 
-    @NotNull
+    @NotNull(message = "The value must not be null")
     private Double value;
 
     public Long getId() {
@@ -34,19 +32,19 @@ public class OrderItemDomain {
         this.id = id;
     }
 
-    public OrderDomain getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderDomain order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 
-    public ProductDomain getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(ProductDomain product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

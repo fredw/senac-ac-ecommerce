@@ -4,22 +4,9 @@
     <title>Produtos</title>
 </head>
 <body>
-    <div layout:fragment="content">
+    <div layout:fragment="content" th:remove="tag">
         <h1>Produtos</h1>
-        <section class="products products-highlight row">
-            <!--/*@thymesVar id="products" type="java.util.List"*/-->
-            <div th:if="${#lists.isEmpty(products)}" class="alert alert-info col-md-12">
-                Nenhum produto disponível
-            </div>
-            <!--/*@thymesVar id="product" type="com.ddf.domain.ProductDomain"*/-->
-            <div th:each="product: ${products}" class="product col-xs-6 col-sm-4 col-md-3">
-                <img src="http://lorempixel.com/300/200/" alt="Image X" class="img-responsive"/>
-                <p th:text="${product.name}" class="name"></p>
-                <p th:text="${product.description}" class="description"></p>
-                <p class="price">Preço: <strong th:text="${product.price}" class="price"></strong></p>
-                <a href="" th:title="${product.name}" class="btn btn-default btn-small">Adicionar ao carrinho</a>
-            </div>
-        </section>
+        <section th:replace="fragments/product :: product"></section>
     </div>
 </body>
 </html>

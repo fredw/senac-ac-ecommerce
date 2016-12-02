@@ -4,16 +4,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "customer")
-public class CustomerDomain {
+public class Customer {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @OneToOne
-    @NotNull
-    private UserDomain user;
+    @NotNull(message = "The user must not be null")
+    private User user;
 
     public Long getId() {
         return id;
@@ -23,11 +22,11 @@ public class CustomerDomain {
         this.id = id;
     }
 
-    public UserDomain getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDomain user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

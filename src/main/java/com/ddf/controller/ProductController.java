@@ -21,9 +21,4 @@ public class ProductController {
         model.addAttribute("products", productRepository.findAll());
         return "product";
     }
-
-    @RequestMapping("/carrinho")
-    public String cart(Model model) {
-        return "cart";
-    }
 }

@@ -1,10 +1,10 @@
 package com.ddf.repository;
 
-import com.ddf.domain.User;
+import com.ddf.domain.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface CartRepository extends JpaRepository<Cart, Long> {
 
 }

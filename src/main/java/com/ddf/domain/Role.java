@@ -7,14 +7,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "role")
-public class RoleDomain {
+public class Role {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @NotNull
+    @NotNull(message = "The name must not be null")
     private String name;
 
     public Long getId() {

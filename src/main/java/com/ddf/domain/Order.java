@@ -7,20 +7,19 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "order")
-public class OrderDomain {
+public class Order {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    @NotNull
-    private CustomerDomain customer;
+    @NotNull(message = "The customer must not be null")
+    private Customer customer;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @NotNull
+    @NotNull(message = "The date must not be null")
     private Date date;
 
     @NotNull
@@ -34,11 +33,11 @@ public class OrderDomain {
         this.id = id;
     }
 
-    public CustomerDomain getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerDomain customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
