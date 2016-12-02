@@ -34,13 +34,13 @@
                         <td class="text-center">
                             <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text" name="price[]" title="Preço" class="form-control text-right price" readonly="readonly" th:value="${cartItem.getPrice()}"/>
+                                <input type="text" name="price[]" title="Preço" class="form-control text-right price" readonly="readonly" th:value="${#numbers.formatDecimal(cartItem.getPrice(), 1, 2, 'POINT')}"/>
                             </div>
                         </td>
                         <td class="text-center">
                             <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text" name="total[]" title="Total" class="form-control text-right total" readonly="readonly" th:value="${cartItem.getQuantity() * cartItem.getPrice()}"/>
+                                <input type="text" name="total[]" title="Total" class="form-control text-right total" readonly="readonly" th:value="${#numbers.formatDecimal(cartItem.getQuantity() * cartItem.getPrice(), 1, 2, 'POINT')}"/>
                             </div>
                         </td>
                         <td class="text-center">
@@ -59,7 +59,7 @@
                         <td class="text-right">
                             <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text" name="cart-total" title="Valor total do carrinho" class="form-control text-right" readonly="readonly" th:value="${#numbers.formatDecimal(cart.getTotal(), 1, 2, 'POINT')}"/>
+                                <input type="text" name="cart-total" title="Valor total do carrinho" class="form-control text-right cart-total" readonly="readonly" th:value="${#numbers.formatDecimal(cart.getTotal(), 1, 2, 'POINT')}"/>
                             </div>
                         </td>
                         <td></td>
@@ -70,17 +70,19 @@
 
                 var cartTotal = function () {
                     var total = 0;
-                    $('.total').each(function ($input) {
-                        total += $input.val();
+                    $('.total').each(function (i, input) {
+                        total += parseFloat($(this).val());
                     });
                     $('.cart-total').val(total.toFixed(2));
                 };
 
                 $(function() {
-                    var $quantity = $('.quantity');
-                    $quantity.on('change', function (e) {
-                        var total = ($('.price').val() * $quantity.val()).toFixed(2);
-                        $('.total').val(total);
+                    $('.quantity').on('change', function (e) {
+                        var $row = $(this).closest('tr');
+                        console.log($row);
+                        var total = ($row.find('.price').val() * $(this).val()).toFixed(2);
+                        $row.find('.total').val(total);
+                        cartTotal();
                     });
 
                     $('.btn-remove').on('click', function (e) {

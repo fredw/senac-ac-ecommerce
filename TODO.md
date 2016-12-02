@@ -1,8 +1,6 @@
 # Requisitos
 - Carrinho de compras
-    - Resolver problema sobre carrinho, sessão, itens e update
-    - Implementar remoção de itens do carrinho
-    - Implementar visualização do total
+    - Implementar efetivação da compra
 - Usuário
     - Implementar cadastro do usuário
     - Implementar login

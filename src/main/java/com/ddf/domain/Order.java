@@ -14,6 +14,10 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @NotNull(message = "The status must not be null")
+    private OrderStatus status;
+
+    @ManyToOne
     @NotNull(message = "The customer must not be null")
     private Customer customer;
 
@@ -31,6 +35,14 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     public Customer getCustomer() {
