@@ -21,6 +21,10 @@ public class Order {
     @NotNull(message = "The customer must not be null")
     private Customer customer;
 
+    @ManyToOne
+    @NotNull(message = "The cart must not be null")
+    private Cart cart;
+
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @NotNull(message = "The date must not be null")
@@ -51,6 +55,14 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Date getDate() {

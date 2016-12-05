@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class OrderStatus {
 
+    public static Long PAYMENT_WAITING = 1L;
+    public static Long PAYMENT_COMPLETED = 2L;
+    public static Long CANCELED = 3L;
+
     @Id
     @GeneratedValue
     private Long id;

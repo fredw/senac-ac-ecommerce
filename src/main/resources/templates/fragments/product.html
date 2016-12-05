@@ -30,9 +30,6 @@
                         url: '/cart/add/' + $(this).data('product-code'),
                         contentType: 'application/json',
                         dataType: 'json'
-                        /*,data: JSON.stringify({
-                            product: $(this).data('product-id')
-                        })*/
                     })
                     .done(function (data) {
                         if (data.success) {

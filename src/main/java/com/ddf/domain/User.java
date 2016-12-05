@@ -1,6 +1,9 @@
 package com.ddf.domain;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -11,12 +14,15 @@ public class User {
     private Long id;
 
     @NotNull(message = "The name must not be null")
+    @Min(value = 5, message = "Name must be at least 5 characters")
     private String name;
 
     @NotNull(message = "The email must not be null")
+    @Email
     private String email;
 
     @NotNull(message = "The password must not be null")
+    @Min(value = 5, message = "Password must be at least 5 characters")
     private String password;
 
     @ManyToOne

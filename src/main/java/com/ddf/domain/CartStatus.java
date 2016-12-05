@@ -3,14 +3,13 @@ package com.ddf.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Role {
+public class CartStatus {
 
-    public static final Long ADMIN = 1L;
-    public static final Long CUSTOMER = 2L;
+    public static Long ACTIVE = 1L;
+    public static Long BOUGHT = 2L;
 
     @Id
     @GeneratedValue

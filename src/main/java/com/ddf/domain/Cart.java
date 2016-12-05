@@ -16,6 +16,10 @@ public class Cart implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne
+    @NotNull
+    private CartStatus status;
+
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CartItem> items = new HashSet<>();
 
@@ -30,6 +34,14 @@ public class Cart implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public CartStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CartStatus status) {
+        this.status = status;
     }
 
     public Set<CartItem> getItems() {

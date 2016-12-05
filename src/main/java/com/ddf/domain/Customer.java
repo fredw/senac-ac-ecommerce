@@ -10,7 +10,7 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @NotNull(message = "The user must not be null")
     private User user;
 

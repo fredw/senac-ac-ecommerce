@@ -11,7 +11,7 @@
             Nenhum produto adicionado no carrinho de compras.
         </div>
         <div class="clearfix"></div>
-        <form action="" th:if="${!#lists.isEmpty(cart.getItems())}">
+        <form th:action="@{/cart/submit}" method="post" th:if="${!#lists.isEmpty(cart.getItems())}">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -26,7 +26,7 @@
                 <tbody>
                     <!--/*@thymesVar id="cartItem" type="com.ddf.domain.CartItem"*/-->
                     <tr th:each="cartItem: ${cart.getItems()}">
-                        <td class="text-center" th:text="${cartItem.getProduct().getCode()}"></td>
+                        <td class="text-center code" th:text="${cartItem.getProduct().getCode()}" th:attr="data-product-code=${cartItem.getProduct().getCode()}"></td>
                         <td th:text="${cartItem.getProduct().getName()}"></td>
                         <td class="text-center">
                             <input type="number" name="quantity[]" title="Quantidade" step="1" min="1" max="99" class="form-control text-center quantity" th:value="${cartItem.getQuantity()}"/>
@@ -44,7 +44,7 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            <a href="javascript:" title="Remover produto" class="btn btn-default btn-small btn-remove" th:attr="data-product-code=${cartItem.getProduct().getCode()}">
+                            <a href="javascript:" title="Remover produto" class="btn btn-default btn-small btn-remove">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </a>
                         </td>
@@ -66,47 +66,64 @@
                     </tr>
                 </tfoot>
             </table>
-            <script>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" title="Finalizar compra" class="btn btn-success pull-right">Finalizar compra</button>
+            <div class="clearfix"></div>
+        </form>
+        <script>
 
-                var cartTotal = function () {
-                    var total = 0;
-                    $('.total').each(function (i, input) {
-                        total += parseFloat($(this).val());
-                    });
-                    $('.cart-total').val(total.toFixed(2));
-                };
+            var cartTotal = function () {
+                var total = 0;
+                $('.total').each(function (i, input) {
+                    total += parseFloat($(this).val());
+                });
+                $('.cart-total').val(total.toFixed(2));
+            };
 
-                $(function() {
-                    $('.quantity').on('change', function (e) {
-                        var $row = $(this).closest('tr');
-                        console.log($row);
-                        var total = ($row.find('.price').val() * $(this).val()).toFixed(2);
-                        $row.find('.total').val(total);
-                        cartTotal();
-                    });
+            $(function() {
+                $('.quantity').on('change', function () {
+                    var $row = $(this).closest('tr');
+                    var total = ($row.find('.price').val() * $(this).val()).toFixed(2);
+                    $row.find('.total').val(total);
+                    cartTotal();
 
-                    $('.btn-remove').on('click', function (e) {
-                        e.preventDefault();
-                        var $row = $(this).parents('tr');
-                        $.ajax({
-                            method: 'post',
-                            url: '/cart/remove/' + $(this).data('product-code'),
-                            contentType: 'application/json',
-                            dataType: 'json'
+                    $.ajax({
+                        method: 'post',
+                        url: '/cart/update/' + $row.find('.code').data('product-code'),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            quantity: $(this).val()
                         })
-                        .done(function (data) {
-                            if (data.success) {
-                                $row.remove();
-                                window.location.reload();
-                            } else {
-                                alert('Problema ao adicionar produto ao carrinho!')
-                            }
-                        });
+                    })
+                    .done(function (data) {
+                        if (!data.success) {
+                            alert('Problema ao atualizar produto ao carrinho!')
+                        }
                     });
                 });
 
-            </script>
-        </form>
+                $('.btn-remove').on('click', function (e) {
+                    e.preventDefault();
+                    var $row = $(this).parents('tr');
+                    $.ajax({
+                        method: 'post',
+                        url: '/cart/remove/' + $row.find('.code').data('product-code'),
+                        contentType: 'application/json',
+                        dataType: 'json'
+                    })
+                            .done(function (data) {
+                                if (data.success) {
+                                    $row.remove();
+                                    window.location.reload();
+                                } else {
+                                    alert('Problema ao adicionar produto ao carrinho!')
+                                }
+                            });
+                });
+            });
+
+        </script>
     </div>
 </body>
 </html>

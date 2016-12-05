@@ -21,8 +21,11 @@ public class OrderItem {
     @NotNull(message = "The quantity must not be null")
     private int quantity;
 
-    @NotNull(message = "The value must not be null")
-    private Double value;
+    @NotNull(message = "The price must not be null")
+    private Double price;
+
+    @NotNull(message = "The total must not be null")
+    private Double total;
 
     public Long getId() {
         return id;
@@ -56,11 +59,19 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }
