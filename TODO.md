@@ -16,3 +16,4 @@
 
 # Extras/Adicionais
 - Implementar o envio de e-mail para o cliente avisando sobre a confirmação de pagamento;
+- Implementar o https://github.com/goodybag/bootstrap-notify após adicionar produto no carrinho

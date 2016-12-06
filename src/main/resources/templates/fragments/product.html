@@ -11,7 +11,7 @@
         </div>
         <!--/*@thymesVar id="product" type="com.ddf.domain.Product"*/-->
         <div th:each="product: ${products}" class="product col-xs-6 col-sm-4 col-md-3">
-            <img src="http://lorempixel.com/300/200/" alt="Image X" class="img-responsive"/>
+            <img src="http://lorempixel.com/300/200/" th:alt="${product.name}" class="img-responsive"/>
             <p class="title">
                 #<span th:text="${product.code}"></span> -
                 <span th:text="${product.name}"></span>
@@ -33,9 +33,9 @@
                     })
                     .done(function (data) {
                         if (data.success) {
-                            alert('Produto adicionado ao carrinho com sucesso!')
+                            $.bootstrapGrowl('Produto adicionado ao carrinho!', {type: 'success', width: 270, offset: {from: 'top', amount: 70}});
                         } else {
-                            alert('Problema ao adicionar produto ao carrinho!')
+                            $.bootstrapGrowl('Problema ao adicionar produto ao carrinho!', {type: 'error'});
                         }
                     });
                 });

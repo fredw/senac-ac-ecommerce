@@ -3,6 +3,10 @@
     Layout
     ================================================================== */
 
+body {
+    padding-top: 70px;
+}
+
 .menu .cart {
     background: #3c3c3c;
     color: #FFF !important;

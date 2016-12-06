@@ -98,7 +98,7 @@
                     })
                     .done(function (data) {
                         if (!data.success) {
-                            alert('Problema ao atualizar produto ao carrinho!')
+                            $.bootstrapGrowl('Problema ao atualizar produto ao carrinho!', {type: 'error'});
                         }
                     });
                 });
@@ -112,14 +112,14 @@
                         contentType: 'application/json',
                         dataType: 'json'
                     })
-                            .done(function (data) {
-                                if (data.success) {
-                                    $row.remove();
-                                    window.location.reload();
-                                } else {
-                                    alert('Problema ao adicionar produto ao carrinho!')
-                                }
-                            });
+                    .done(function (data) {
+                        if (data.success) {
+                            $row.remove();
+                            window.location.reload();
+                        } else {
+                            $.bootstrapGrowl('Problema ao remover produto do carrinho!', {type: 'error'});
+                        }
+                    });
                 });
             });
 
