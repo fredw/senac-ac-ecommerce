@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
 <head>
-    <title>Cliente - Cadastro</title>
+    <title>Cadastro de Cliente</title>
 </head>
 <body>
     <div layout:fragment="content" class="cart">
         <h1>Cadastro</h1>
         <!--/*@thymesVar id="customer" type="com.ddf.domain.Customer"*/-->
+        <div th:errors="${customer.*}">#1</div>
+        <div th:errors="${customer.user.*}">#2</div>
         <form th:action="@{/cadastro}" method="post" th:object="${customer}">
+            <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error!</li>
+            </ul>
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+            </ul>
+            <p th:if="${#fields.hasErrors('all')}" th:errors="*{all}">Incorrect date</p>
+            <div th:if="${#fields.hasAnyErrors()}">
+                <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+            </div>
+            <ul th:if="${#fields.hasErrors('global')}">
+                <li th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</li>
+            </ul>
+            <th:block th:if="${#fields.hasErrors('${customer.user.*}')}">
+                <div class="alert alert-dismissable" th:classappend="'alert-danger'">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <span th:text="Form contains errors. Please try again.">Test</span>
+                </div>
+            </th:block>
+            #4#
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" class="form-control" id="name" th:field="*{user.name}" required="required"/>
-                <span th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}" class="alert alert-danger"></span>
+                <span th:errors="*{user.name}" class="alert alert-danger">xxxx</span>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="text" class="form-control" id="email" th:field="*{user.email}" required="required"/>
-                <span th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}" class="alert alert-danger"></span>
+                <input type="email" class="form-control" id="email" th:field="*{user.email}" required="required"/>
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
                 <input type="password" class="form-control" id="password" th:field="*{user.password}" required="required"/>
-                <span th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}" class="alert alert-danger"></span>
             </div>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <button type="submit" title="Cadastrar" class="btn btn-success">Cadastrar</button>
             <div class="clearfix"></div>
         </form>

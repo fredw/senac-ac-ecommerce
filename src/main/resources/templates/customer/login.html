@@ -11,8 +11,11 @@
         <div th:if="${error}" th:text="${error}"></div>
 
         <h2 class="form-signin-heading">Login</h2>
-        <label for="email" class="sr-only">E-mail</label>
-        <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required="required" autofocus="autofocus"/>
+
+        <div th:if="${user}" th:text="${user.name}">xxxx</div>
+
+        <label for="username" class="sr-only">E-mail</label>
+        <input type="email" id="username" name="username" class="form-control" placeholder="E-mail" required="required" autofocus="autofocus"/>
         <label for="password" class="sr-only">Password</label>
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required"/>
 

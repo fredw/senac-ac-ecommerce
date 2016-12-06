@@ -20,13 +20,13 @@ public class Cart implements Serializable {
     @NotNull
     private CartStatus status;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<CartItem> items = new HashSet<>();
-
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern="yyyy-MM-dd HH:ii:ss")
     @NotNull(message = "The date must not be null")
     private Date date;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CartItem> items = new HashSet<>();
 
     public Long getId() {
         return id;

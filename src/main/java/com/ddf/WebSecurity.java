@@ -7,9 +7,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,13 +35,24 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*").permitAll();
     }
 
-    @Autowired
+    /*@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
                 .withUser("user")
                     .password("password")
                     .roles("USER");
+
+    }*/
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+            .dataSource(dataSource)
+            .usersByUsernameQuery(
+                "select email, password from user where email=?")
+            .authoritiesByUsernameQuery(
+                "select email, role_id from user where email=?");
 
     }
 }

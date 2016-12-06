@@ -18,9 +18,7 @@ import java.util.HashMap;
 public class CartController {
 
     private final CartUserService cartUserService;
-
     private final CartService cartService;
-
     private final CustomerRepository customerRepository;
 
     @Autowired
@@ -45,7 +43,7 @@ public class CartController {
 
         Cart cart = this.cartUserService.getUserCart(request);
 
-        // @TODO: pegar o cliente cadastrado
+        // @TODO: pegar o cliente cadastrado/logado
         Customer customer = customerRepository.findOne(1L);
 
         this.cartService.submit(cart, customer);

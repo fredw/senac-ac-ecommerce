@@ -16,12 +16,19 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Usuário">Usuário <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/minhas-compras}">Minhas compras</a></li>
+                            <li><a th:href="@{/logout}">Sair</a></li>
+                        </ul>
+                    </li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}">
                         <a th:href="@{/login}" title="Entrar">Entrar</a>
                     </li>
-                    <li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/cadastro' ? 'active' : ''}">
                         <a th:href="@{/cadastro}" title="Cadastrar">Cadastrar</a>
                     </li>
-                    <li>
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/carrinho' ? 'active' : ''}">
                         <a th:href="@{/carrinho}" title="Ver carrinho de compras" class="cart">
                             <i class="glyphicon glyphicon-shopping-cart"></i>
                             Carrinho

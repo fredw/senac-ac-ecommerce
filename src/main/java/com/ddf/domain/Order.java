@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Order {
@@ -32,6 +34,9 @@ public class Order {
 
     @NotNull
     private Double value;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<OrderItem> items = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -79,5 +84,9 @@ public class Order {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 }

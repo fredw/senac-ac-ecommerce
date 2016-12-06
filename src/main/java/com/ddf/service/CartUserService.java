@@ -25,18 +25,18 @@ public class CartUserService {
 
     public Cart getUserCart(HttpServletRequest request) {
         Long cartId = (Long) request.getSession().getAttribute("cart");
+        Cart cart = cartId != null ? this.cartRepository.findOne(cartId) : null;
 
-        if (cartId == null) {
+        if (cart == null) {
             // Create new cart
-            Cart cart = new Cart();
+            cart = new Cart();
             cart.setDate(new Date());
             cart.setStatus(this.cartStatusRepository.findOne(CartStatus.ACTIVE));
             this.cartRepository.save(cart);
             // And store to Session
             request.getSession().setAttribute("cart", cart.getId());
-            return cart;
         }
 
-        return this.cartRepository.findOne(cartId);
+        return cart;
     }
 }

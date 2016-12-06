@@ -10,7 +10,7 @@ INSERT INTO product (`code`, `name`, `description`, `price`, `featured`, `image`
 INSERT INTO product (`code`, `name`, `description`, `price`, `featured`, `image`, `file`) VALUES ('XYZ', 'Produto XYZ', 'Praesent in aliquam leo, sit amet luctus eros. In hac habitasse platea dictumst.', 983.90, 0, 'image.jpg', 'file.pdf');
 
 insert into order_status (`name`) values ('Aguardando pagamento');
-insert into order_status (`name`) values ('Pagamento realizado');
+insert into order_status (`name`) values ('Pagamento confirmado');
 insert into order_status (`name`) values ('Cancelado');
 
 insert into cart_status (`name`) values ('Ativo');

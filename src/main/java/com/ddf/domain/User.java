@@ -18,7 +18,7 @@ public class User {
     private String name;
 
     @NotNull(message = "The email must not be null")
-    @Email
+    @Email(message = "E-mail invalid")
     private String email;
 
     @NotNull(message = "The password must not be null")
