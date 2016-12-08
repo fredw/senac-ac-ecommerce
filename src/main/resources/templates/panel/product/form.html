@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="panel/layout">
+<head>
+    <title>Produto</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <!--/*@thymesVar id="product" type="com.ddf.domain.Product"*/-->
+        <h1>Produto <span th:if="${product.getId()}" th:text="'#' + ${product.getId()}"></span></h1>
+        <form th:action="${#httpServletRequest.requestURI}" method="post" th:object="${product}" enctype="multipart/form-data">
+            <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger list-unstyled">
+                <li th:each="error : ${#fields.errors('*')}" th:text="'- ' + ${error}"></li>
+            </ul>
+            <div class="row">
+                <div class="form-group col-md-2">
+                    <label for="code">Código</label>
+                    <input type="text" class="form-control" id="code" th:field="*{code}" maxlength="10" required="required"/>
+                </div>
+                <div class="form-group col-md-10">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" required="required"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="description">Descrição</label>
+                    <input type="text" class="form-control" id="description" th:field="*{description}" required="required"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="image">Imagem</label>
+                    <input type="file" id="image" th:field="*{image}" required="required"/>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="file">Arquivo PDF</label>
+                    <input type="file" id="file" th:field="*{file}" required="required"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="price">Preço</label>
+                    <input type="number" class="form-control" id="price" th:field="*{price}" step="0.01" required="required"/>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" th:field="*{featured}" value="1"/>
+                            Destaque
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" th:field="*{id}"/>
+            <button type="submit" title="Salvar" class="btn btn-success">Salvar</button>
+            <a th:href="@{/painel/produtos}" title="Voltar" class="btn btn-default">Voltar</a>
+            <div class="clearfix"></div>
+        </form>
+    </section>
+</body>
+</html>

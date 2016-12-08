@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="panel/layout">
+<head>
+    <title>Pedidos</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <h1>Pedidos</h1>
+        <!--/*@thymesVar id="orders" type="java.util.List"*/-->
+        <div th:if="${#lists.isEmpty(orders)}" class="alert alert-info">
+            Nenhum produto cadastrado
+        </div>
+        <table th:if="${!#lists.isEmpty(orders)}" class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="100" class="text-center">#</th>
+                    <th width="150" class="text-center">Data da compra</th>
+                    <th class="text-left">Cliente</th>
+                    <th width="180" class="text-center">Status</th>
+                    <th width="150" class="text-right">Valor</th>
+                    <th width="90" class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--/*@thymesVar id="order" type="com.ddf.domain.Order"*/-->
+                <tr th:each="order: ${orders}">
+                    <td class="text-center" th:text="${order.getId()}"></td>
+                    <td class="text-center" th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${order.getCustomer().getUser().getName()}"></td>
+                    <td class="text-center">
+                        <span th:if="${T(com.ddf.domain.OrderStatus).PAYMENT_WAITING == order.getStatus().getId()}" class="label label-warning" th:text="${order.getStatus().getName()}"></span>
+                        <span th:if="${T(com.ddf.domain.OrderStatus).PAYMENT_CONFIRMED == order.getStatus().getId()}" class="label label-success" th:text="${order.getStatus().getName()}"></span>
+                        <span th:if="${T(com.ddf.domain.OrderStatus).CANCELED == order.getStatus().getId()}" class="label label-danger" th:text="${order.getStatus().getName()}"></span>
+                    </td>
+                    <td class="text-right">R$ <span th:text="${#numbers.formatDecimal(order.getValue(), 1, 2, 'POINT')}"></span></td>
+                    <td class="text-center">
+                        <a th:href="@{/painel/pedidos/} + ${order.getId()}" title="Detalhe do pedido" class="btn btn-default btn-sm">
+                            Detalhe
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

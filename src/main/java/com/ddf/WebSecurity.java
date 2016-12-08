@@ -18,21 +18,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http
-            .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();*/
         http
             .authorizeRequests()
-                .antMatchers("/*").permitAll();
+                .antMatchers("/*").permitAll()
+                .and()
+            .formLogin()
+                .loginPage("/login").
+                and()
+            .logout()
+                .permitAll();
     }
 
     /*@Autowired
@@ -50,9 +44,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
             .dataSource(dataSource)
             .usersByUsernameQuery(
-                "select email, password from user where email=?")
+                "select email, password, enabled from user where email=?")
             .authoritiesByUsernameQuery(
                 "select email, role_id from user where email=?");
-
     }
 }

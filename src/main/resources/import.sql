@@ -1,8 +1,9 @@
 insert into role (`name`) values ('Administrator');
 insert into role (`name`) values ('Customer');
 
-insert into user (`name`, email, password, role_id) values ('Administrador', 'admin@ddf.com', '12345', 1);
-insert into user (`name`, email, password, role_id) values ('Cliente teste', 'cliente@exemplo.com', '12345', 2);
+-- Password: 12345
+insert into user (`name`, email, password, role_id, enabled) values ('Administrador', 'fred.wuerges+admin@gmail.com', '$2a$10$yXlnqwVRadcEEQ3c4Z5qmOT2pyavdw0seSopNQrmsFls3qXrd4cra', 1, 1);
+insert into user (`name`, email, password, role_id, enabled) values ('Cliente teste', 'fred.wuerges+cliente@gmail.com', '$2a$10$yXlnqwVRadcEEQ3c4Z5qmOT2pyavdw0seSopNQrmsFls3qXrd4cra', 2, 1);
 
 insert into customer (`user_id`) values (2);
 

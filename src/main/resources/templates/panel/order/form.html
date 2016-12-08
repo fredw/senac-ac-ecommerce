@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="panel/layout">
+<head>
+    <title>Pedido</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <!--/*@thymesVar id="order" type="com.ddf.domain.Order"*/-->
+        <h1>Pedido <span th:text="'#' + ${order.getId()}"></span></h1>
+        <form th:action="${#httpServletRequest.requestURI}" method="post" th:object="${order}">
+            <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger list-unstyled">
+                <li th:each="error : ${#fields.errors('*')}" th:text="'- ' + ${error}"></li>
+            </ul>
+            <div class="row">
+                <div class="form-group col-md-2">
+                    <label for="date-disabled">Data</label>
+                    <input type="date" class="form-control" id="date-disabled" name="date-disabled" th:value="${#dates.format(order.date, 'dd/MM/yyyy HH:mm')}" disabled="disabled" required="required"/>
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="customer-disabled">Cliente</label>
+                    <input type="text" class="form-control" id="customer-disabled" name="customer-disabled" th:value="${order.customer.user.name}" disabled="disabled" required="required"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="value-disabled">Valor</label>
+                    <input type="text" class="form-control" id="value-disabled" name="value-disabled" th:value="${'R$ ' + #numbers.formatDecimal(order.value, 1, 'POINT', 2, 'COMMA')}" disabled="disabled" required="required"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="status">Status</label>
+                    <!--/*@thymesVar id="statuses" type="java.util.List"*/-->
+                    <select id="status" class="form-control" th:field="*{status}">
+                        <!--/*@thymesVar id="status" type="com.ddf.domain.OrderStatus"*/-->
+                        <option th:each="status : ${statuses}" th:value="${status.id}" th:text="${status.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{customer}"/>
+            <input type="hidden" th:field="*{value}"/>
+            <input type="hidden" th:field="*{date}"/>
+            <input type="hidden" th:field="*{cart}"/>
+            <button type="submit" title="Salvar" class="btn btn-success">Salvar</button>
+            <a th:href="@{/painel/pedidos}" title="Voltar" class="btn btn-default">Voltar</a>
+            <div class="clearfix"></div>
+            <h3>Produtos</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="text-left">Produto</th>
+                    <th width="100" class="text-center">Quantidade</th>
+                    <th width="110" class="text-right">Preço</th>
+                    <th width="130" class="text-right">Total</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <!--/*@thymesVar id="orderItem" type="com.ddf.domain.OrderItem"*/-->
+                <tr th:each="orderItem: ${order.getItems()}">
+                    <td th:text="'#' + ${orderItem.getProduct().getCode()} + ' - ' + ${orderItem.getProduct().getName()}"></td>
+                    <td class="text-center" th:text="${orderItem.getQuantity()}"></td>
+                    <td class="text-right">R$ <span th:text="${#numbers.formatDecimal(orderItem.getPrice(), 1, 'POINT', 2, 'COMMA')}"></span></td>
+                    <td class="text-right">R$ <span th:text="${#numbers.formatDecimal(orderItem.getTotal(), 1, 'POINT', 2, 'COMMA')}"></span></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </section>
+</body>
+</html>

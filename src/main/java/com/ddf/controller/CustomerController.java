@@ -1,17 +1,17 @@
 package com.ddf.controller;
 
 import com.ddf.domain.Customer;
+import com.ddf.domain.Role;
 import com.ddf.domain.User;
-import com.ddf.repository.CustomerRepository;
 import com.ddf.service.CustomerService;
+import com.ddf.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -20,43 +20,59 @@ import javax.validation.Valid;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final CustomerRepository customerRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerRepository customerRepository) {
+    public CustomerController(CustomerService customerService, RoleService roleService) {
         this.customerService = customerService;
-        this.customerRepository = customerRepository;
+        this.roleService = roleService;
     }
 
     @RequestMapping("/cadastro")
     public ModelAndView registerIndex() {
-        ModelAndView mv = new ModelAndView("customer/register");
+        User user = new User();
+        user.setRole(this.roleService.get(Role.CUSTOMER));
         Customer customer = new Customer();
-        customer.setUser(new User());
+        customer.setUser(user);
+        ModelAndView mv = new ModelAndView("customer/register");
         mv.addObject("customer", customer);
         return mv;
     }
 
     @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
     public ModelAndView registerSubmit(
-        @ModelAttribute("customer") @Valid Customer customer,
-        BindingResult resultCustomer,
-        @ModelAttribute("user") @Valid User user,
-        BindingResult resultUser
+        Customer customer,
+        BindingResult resultCustomer
+        //,User user,
+        //BindingResult resultUser
     ) {
-        customer.setUser(user);
+        // # Customer
+        //System.out.println(customer.getUser().getName());
+        //System.out.println(customer.getUser().getEmail());
+        //System.out.println(customer.getUser().getPassword());
+        //System.out.println(customer.getUser().getRole().getId());
+        // # User
+        //System.out.println(user.getName());
+        //System.out.println(user.getEmail());
+        //System.out.println(user.getPassword());
+        //System.out.println(user.getRole().getId());
 
-        if (resultCustomer.hasErrors() || resultUser.hasErrors()) {
-            System.out.println(resultCustomer);
-            System.out.println(resultUser);
-            //return new ModelAndView("customer/register");
-            ModelAndView mv = new ModelAndView("customer/register");
-            mv.addObject("customer", customer);
-            mv.addObject("user", user);
-            //mv.addObject("errors", resultUser);
+        ModelAndView mv = new ModelAndView("customer/register");
+        mv.addObject("customer", customer);
+
+        if (resultCustomer.hasErrors()) {
+        //if (resultCustomer.hasErrors() || resultUser.hasErrors()) {
+            //System.out.println(resultCustomer);
+            //System.out.println(resultUser);
             return mv;
         }
-        this.customerService.save(customer);
+
+        try {
+            this.customerService.save(customer);
+        } catch (Exception e) {
+            return mv;
+        }
+
         return new ModelAndView("customer/success");
     }
 
@@ -77,7 +93,7 @@ public class CustomerController {
     public ModelAndView myOrders() {
 
         // @TODO: alterar para retornar somente as compras do usuário logado
-        Customer customer = this.customerRepository.findOne(1L);
+        Customer customer = this.customerService.get(1L);
 
         ModelAndView mv = new ModelAndView("customer/order/index");
         mv.addObject("orders", this.customerService.getOrders(customer));
@@ -88,7 +104,7 @@ public class CustomerController {
     public ModelAndView myOrders(@PathVariable Long orderId) throws Exception {
 
         // @TODO: alterar para retornar somente as compras do usuário logado
-        Customer customer = this.customerRepository.findOne(1L);
+        Customer customer = this.customerService.get(1L);
 
         ModelAndView mv = new ModelAndView("customer/order/detail");
         mv.addObject("order", this.customerService.getOrder(customer, orderId));

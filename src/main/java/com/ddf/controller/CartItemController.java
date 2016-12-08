@@ -2,18 +2,13 @@ package com.ddf.controller;
 
 import com.ddf.domain.Cart;
 import com.ddf.domain.CartItem;
-import com.ddf.domain.Customer;
 import com.ddf.domain.Product;
-import com.ddf.repository.CustomerRepository;
-import com.ddf.repository.ProductRepository;
 import com.ddf.service.CartItemService;
-import com.ddf.service.CartService;
 import com.ddf.service.CartUserService;
+import com.ddf.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -25,17 +20,17 @@ public class CartItemController {
 
     private final CartItemService cartItemService;
 
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @Autowired
     public CartItemController(
         CartUserService cartUserService,
         CartItemService cartItemService,
-        ProductRepository productRepository
+        ProductService productService
     ) {
         this.cartUserService = cartUserService;
         this.cartItemService = cartItemService;
-        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @RequestMapping(value = "/cart/add/{code}", method = RequestMethod.POST, produces = "application/json")
@@ -43,7 +38,7 @@ public class CartItemController {
     public HashMap add(HttpServletRequest request, @PathVariable String code) {
 
         Cart cart = this.cartUserService.getUserCart(request);
-        Product product = productRepository.findOneByCode(code);
+        Product product = this.productService.getByCode(code);
 
         this.cartItemService.add(cart, product);
 
@@ -57,7 +52,7 @@ public class CartItemController {
     @ResponseBody
     public HashMap update(@RequestBody CartItem cartItem, @PathVariable String code) throws Exception {
 
-        Product product = productRepository.findOneByCode(code);
+        Product product = this.productService.getByCode(code);
 
         this.cartItemService.update(cartItem, product);
 
@@ -72,7 +67,7 @@ public class CartItemController {
     public HashMap remove(HttpServletRequest request, @PathVariable String code) throws Exception {
 
         Cart cart = this.cartUserService.getUserCart(request);
-        Product product = productRepository.findOneByCode(code);
+        Product product = this.productService.getByCode(code);
 
         this.cartItemService.remove(cart, product);
 

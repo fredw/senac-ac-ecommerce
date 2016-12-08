@@ -23,7 +23,7 @@
                 <!--/*@thymesVar id="order" type="com.ddf.domain.Order"*/-->
                 <tr th:each="order: ${orders}">
                     <td class="text-center" th:text="${order.getId()}"></td>
-                    <td th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm')}"></td>
+                    <td class="text-center" th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm')}"></td>
                     <td class="text-center" th:text="${order.getStatus().getName()}"></td>
                     <td class="text-center">
                         <a th:href="@{/minhas-compras/} + ${order.getId()}" title="Detalhe da compra" class="btn btn-default btn-sm">

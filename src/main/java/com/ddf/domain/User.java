@@ -14,7 +14,7 @@ public class User {
     private Long id;
 
     @NotNull(message = "The name must not be null")
-    @Min(value = 5, message = "Name must be at least 5 characters")
+    @Min(value = 3, message = "Name must be at least 3 characters")
     private String name;
 
     @NotNull(message = "The email must not be null")
@@ -28,6 +28,8 @@ public class User {
     @ManyToOne
     @NotNull(message = "The role must not be null")
     private Role role;
+
+    private boolean enabled;
 
     public Long getId() {
         return id;
@@ -67,5 +69,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

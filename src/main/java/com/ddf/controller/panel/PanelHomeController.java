@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PanelHomeController {
 
-    @RequestMapping("/panel/")
+    @RequestMapping("/painel")
     public String index() {
         return "panel/home";
     }

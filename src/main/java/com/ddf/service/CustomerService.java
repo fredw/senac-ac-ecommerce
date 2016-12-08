@@ -32,6 +32,10 @@ public class CustomerService {
         this.customerRepository.save(customer);
     }
 
+    public Customer get(Long id) {
+        return this.customerRepository.findOne(id);
+    }
+
     public List<Order> getOrders(Customer customer) {
         return this.orderRepository.findByCustomer(customer);
     }

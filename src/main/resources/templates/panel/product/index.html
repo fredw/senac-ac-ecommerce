@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="panel/layout">
+<head>
+    <title>Produtos</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <h1>Produtos</h1>
+        <form th:action="@{/painel/produtos/excluir}" method="post">
+            <div class="well">
+                <a th:href="@{/painel/produtos/novo}" title="Novo produto" class="btn btn-success">Novo</a>
+                <button type="submit" title="Excluir selecionados" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir os registros selecionado(s)?');">Excluir selecionados</button>
+            </div>
+            <!--/*@thymesVar id="products" type="java.util.List"*/-->
+            <div th:if="${#lists.isEmpty(products)}" class="alert alert-info">
+                Nenhum produto cadastrado
+            </div>
+            <table th:if="${!#lists.isEmpty(products)}" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="50" class="text-center"></th>
+                        <th width="100" class="text-center">#</th>
+                        <th class="text-left">Nome</th>
+                        <th width="110" class="text-right">Preço</th>
+                        <th width="90" class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--/*@thymesVar id="product" type="com.ddf.domain.Product"*/-->
+                    <tr th:each="product: ${products}">
+                        <td class="text-center">
+                            <input type="checkbox" name="code[]" title="" th:value="${product.getCode()}"/>
+                        </td>
+                        <td class="text-center" th:text="${product.getCode()}"></td>
+                        <td th:text="${product.getName()}"></td>
+                        <td class="text-right">R$ <span th:text="${#numbers.formatDecimal(product.getPrice(), 1, 2, 'POINT')}"></span></td>
+                        <td class="text-center">
+                            <a th:href="@{/painel/produtos/} + ${product.getCode()}" title="Detalhe do produto" class="btn btn-default btn-sm">
+                                Detalhe
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </section>
+</body>
+</html>

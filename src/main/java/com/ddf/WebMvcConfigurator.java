@@ -6,12 +6,12 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-public class WebMvcConfigurator
-        extends WebMvcConfigurerAdapter {
+public class WebMvcConfigurator extends WebMvcConfigurerAdapter {
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://" + "/home/fred/Downloads/");
+                .addResourceLocations("file://" + SenacAcEcommerceApplication.UPLOAD_PATH);
     }
 
     @Override

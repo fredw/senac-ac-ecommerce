@@ -4,48 +4,33 @@
     <title>Cadastro de Cliente</title>
 </head>
 <body>
-    <div layout:fragment="content" class="cart">
-        <h1>Cadastro</h1>
-        <!--/*@thymesVar id="customer" type="com.ddf.domain.Customer"*/-->
-        <div th:errors="${customer.*}">#1</div>
-        <div th:errors="${customer.user.*}">#2</div>
-        <form th:action="@{/cadastro}" method="post" th:object="${customer}">
-            <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error!</li>
-            </ul>
-            <ul>
-                <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
-            </ul>
-            <p th:if="${#fields.hasErrors('all')}" th:errors="*{all}">Incorrect date</p>
-            <div th:if="${#fields.hasAnyErrors()}">
-                <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
-            </div>
-            <ul th:if="${#fields.hasErrors('global')}">
-                <li th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</li>
-            </ul>
-            <th:block th:if="${#fields.hasErrors('${customer.user.*}')}">
-                <div class="alert alert-dismissable" th:classappend="'alert-danger'">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <span th:text="Form contains errors. Please try again.">Test</span>
-                </div>
-            </th:block>
-            #4#
-            <div class="form-group">
+<div layout:fragment="content">
+    <h1>Cadastro</h1>
+    <!--/*@thymesVar id="customer" type="com.ddf.domain.Customer"*/-->
+    <form th:action="@{/cadastro}" method="post" th:object="${customer}">
+        <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <li th:each="error : ${#fields.errors('*')}" th:text="${error}">Error!</li>
+        </ul>
+        <div class="row">
+            <div class="form-group col-md-6">
                 <label for="name">Nome</label>
                 <input type="text" class="form-control" id="name" th:field="*{user.name}" required="required"/>
-                <span th:errors="*{user.name}" class="alert alert-danger">xxxx</span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
                 <label for="email">E-mail</label>
                 <input type="email" class="form-control" id="email" th:field="*{user.email}" required="required"/>
             </div>
-            <div class="form-group">
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
                 <label for="password">Senha</label>
                 <input type="password" class="form-control" id="password" th:field="*{user.password}" required="required"/>
             </div>
-            <button type="submit" title="Cadastrar" class="btn btn-success">Cadastrar</button>
-            <div class="clearfix"></div>
-        </form>
-    </div>
+        </div>
+        <input type="hidden" th:field="*{user.role}"/>
+        <button type="submit" title="Cadastrar" class="btn btn-success">Cadastrar</button>
+        <div class="clearfix"></div>
+    </form>
+</div>
 </body>
 </html>
