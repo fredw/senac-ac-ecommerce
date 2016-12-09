@@ -52,7 +52,7 @@
                     <td class="text-right">R$ <span th:text="${#numbers.formatDecimal(orderItem.getTotal(), 1, 'POINT', 2, 'COMMA')}"></span></td>
                     <td class="text-center">
                         <!-- @TODO: implementar o link para download do arquivo -->
-                        <a href="" th:if="${T(com.ddf.domain.OrderStatus).PAYMENT_CONFIRMED == order.getStatus().getId()}" title="Download do arquivo" class="btn btn-default btn-sm">
+                        <a th:href="@{/files/} + ${orderItem.getProduct().getFile()}" th:if="${T(com.ddf.domain.OrderStatus).PAYMENT_CONFIRMED == order.getStatus().getId()}" target="_blank" title="Download do arquivo" class="btn btn-default btn-sm">
                             <i class="glyphicon glyphicon-download-alt"></i>
                         </a>
                         <span th:if="${T(com.ddf.domain.OrderStatus).PAYMENT_WAITING == order.getStatus().getId()}" title="Link para download será liberado assim que o pagamento for realizado e confirmado" class="btn btn-warning btn-sm disabled">

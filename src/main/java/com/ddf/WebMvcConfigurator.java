@@ -10,8 +10,8 @@ public class WebMvcConfigurator extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://" + SenacAcEcommerceApplication.UPLOAD_PATH);
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file://" + Application.UPLOAD_PATH);
     }
 
     @Override

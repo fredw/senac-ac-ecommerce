@@ -6,6 +6,8 @@
 <body>
     <section layout:fragment="content">
         <h1>Produtos</h1>
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
         <form th:action="@{/painel/produtos/excluir}" method="post">
             <div class="well">
                 <a th:href="@{/painel/produtos/novo}" title="Novo produto" class="btn btn-success">Novo</a>

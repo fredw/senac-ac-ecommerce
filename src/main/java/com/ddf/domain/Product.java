@@ -26,11 +26,9 @@ public class Product implements Serializable {
     @NotNull(message = "The price must not be null")
     private Double price;
 
-    @NotNull(message = "The image must not be null")
-    private String image;
+    private String image = "";
 
-    @NotNull(message = "The file must not be null")
-    private String file;
+    private String file = "";
 
     private boolean featured;
 

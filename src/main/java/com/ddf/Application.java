@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SenacAcEcommerceApplication {
+public class Application {
 
-	public final static String UPLOAD_PATH = "/home/fred/Downloads";
+	public final static String UPLOAD_PATH = "/home/fred/Downloads/ac-ecommerce/";
 
 	public static void main(String[] args) {
-		SpringApplication.run(SenacAcEcommerceApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }

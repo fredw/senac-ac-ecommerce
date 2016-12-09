@@ -11,6 +11,7 @@
             <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger list-unstyled">
                 <li th:each="error : ${#fields.errors('*')}" th:text="'- ' + ${error}"></li>
             </ul>
+            <div th:if="${error}" class="alert alert-danger list-unstyled" th:text="'- ' + ${error}"></div>
             <div class="row">
                 <div class="form-group col-md-2">
                     <label for="code">Código</label>
@@ -30,11 +31,11 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="image">Imagem</label>
-                    <input type="file" id="image" th:field="*{image}" required="required"/>
+                    <input type="file" id="image" name="imageFile"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="file">Arquivo PDF</label>
-                    <input type="file" id="file" th:field="*{file}" required="required"/>
+                    <input type="file" id="file" name="fileFile"/>
                 </div>
             </div>
             <div class="row">

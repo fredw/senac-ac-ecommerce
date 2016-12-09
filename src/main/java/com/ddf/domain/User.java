@@ -20,6 +20,7 @@ public class User {
 
     @NotNull(message = "The email must not be null")
     @Email(message = "E-mail invalid")
+    @Column(unique = true)
     private String email;
 
     @NotNull(message = "The password must not be null")

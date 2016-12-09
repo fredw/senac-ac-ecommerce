@@ -19,7 +19,7 @@ public class UserService {
 
     public void save(User user) throws UserEmailDuplicatedException {
 
-        if (this.userRepository.findOneByEmail(user.getEmail()) != null) {
+        if (user.getId() == null && this.userRepository.findOneByEmail(user.getEmail()) != null) {
             throw new UserEmailDuplicatedException();
         }
 

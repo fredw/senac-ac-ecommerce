@@ -53,10 +53,9 @@ public class CustomerController {
         BindingResult result,
         Model model
     ) {
-        model.addAttribute("role", this.roleService.get(Role.CUSTOMER));
-        model.addAttribute("user", user);
-
         if (result.hasErrors()) {
+            model.addAttribute("role", this.roleService.get(Role.CUSTOMER));
+            model.addAttribute("user", user);
             return "customer/register";
         }
 
