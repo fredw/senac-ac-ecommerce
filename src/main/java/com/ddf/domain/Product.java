@@ -1,11 +1,8 @@
 package com.ddf.domain;
 
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -16,7 +13,7 @@ public class Product implements Serializable {
     private Long id;
 
     @NotNull(message = "The code must not be null")
-    @Range(min = 3, max = 10, message = "Code must be between 3 and 10")
+    @Size(min = 3, max = 10, message = "Code must be between 3 and 10")
     @Column(unique = true)
     private String code;
 

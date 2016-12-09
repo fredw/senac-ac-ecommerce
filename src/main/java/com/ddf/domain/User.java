@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -14,7 +15,7 @@ public class User {
     private Long id;
 
     @NotNull(message = "The name must not be null")
-    @Min(value = 3, message = "Name must be at least 3 characters")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50")
     private String name;
 
     @NotNull(message = "The email must not be null")
@@ -22,7 +23,7 @@ public class User {
     private String email;
 
     @NotNull(message = "The password must not be null")
-    @Min(value = 5, message = "Password must be at least 5 characters")
+    @Size(min = 5, message = "Password must be at least 5 characters")
     private String password;
 
     @ManyToOne

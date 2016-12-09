@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
+<head>
+    <title>Carrinho - Identificação</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Identificação</h1>
+        <div class="well text-center">
+        <a th:href="@{/login(redirect=@{/carrinho})}" title="Já tenho cadastro" class="btn btn-success">Já tenho cadastro</a>
+        <a th:href="@{/cadastro(redirect=@{/carrinho})}" title="Não tenho cadastro" class="btn btn-danger">Não tenho cadastro</a>
+        </div>
+    </div>
+</body>
+</html>

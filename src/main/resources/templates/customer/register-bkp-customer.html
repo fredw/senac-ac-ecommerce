@@ -6,29 +6,29 @@
 <body>
 <div layout:fragment="content">
     <h1>Cadastro</h1>
-    <form th:action="@{/cadastro}" method="post" th:object="${user}">
+    <!--/*@thymesVar id="customer" type="com.ddf.domain.Customer"*/-->
+    <form th:action="@{/cadastro}" method="post" th:object="${customer}">
         <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger list-unstyled">
             <li th:each="error : ${#fields.errors('*')}" th:text="'- ' + ${error}">Error!</li>
         </ul>
-        <div th:if="${error}" class="alert alert-danger list-unstyled" th:text="'- ' + ${error}"></div>
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="name">Nome</label>
-                <input type="text" class="form-control" id="name" th:field="*{name}" required="required"/>
+                <input type="text" class="form-control" id="name" th:field="*{user.name}" required="required"/>
             </div>
             <div class="form-group col-md-6">
                 <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" th:field="*{email}" required="required"/>
+                <input type="email" class="form-control" id="email" th:field="*{user.email}" required="required"/>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="password">Senha</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}" required="required"/>
+                <input type="password" class="form-control" id="password" th:field="*{user.password}" required="required"/>
             </div>
         </div>
-        <input type="hidden" name="role" th:value="${role.id}"/>
-        <input type="hidden" name="redirect" th:if="${param.redirect}" th:value="${param.redirect[0]}"/>
+        <input type="hidden" th:field="*{user.role}"/>
+        <input type="hidden" name="redirect" th:value="${param.redirect}"/>
         <button type="submit" title="Cadastrar" class="btn btn-success">Cadastrar</button>
         <div class="clearfix"></div>
     </form>

@@ -3,6 +3,7 @@ package com.ddf.service;
 import com.ddf.domain.*;
 import com.ddf.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +12,7 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-
     private final RoleRepository roleRepository;
-
     private final OrderRepository orderRepository;
 
     @Autowired
@@ -34,6 +33,10 @@ public class CustomerService {
 
     public Customer get(Long id) {
         return this.customerRepository.findOne(id);
+    }
+
+    public Customer getByUser(User user) {
+        return this.customerRepository.findOneByUser(user);
     }
 
     public List<Order> getOrders(Customer customer) {

@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -16,6 +17,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    AuthenticationSuccessHandler successHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -23,29 +27,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*").permitAll()
                 .and()
             .formLogin()
-                .loginPage("/login").
+                .loginPage("/login")
+                .successHandler(successHandler).
                 and()
             .logout()
                 .permitAll();
     }
 
-    /*@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-                .withUser("user")
-                    .password("password")
-                    .roles("USER");
-
-    }*/
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
             .dataSource(dataSource)
-            .usersByUsernameQuery(
-                "select email, password, enabled from user where email=?")
-            .authoritiesByUsernameQuery(
-                "select email, role_id from user where email=?");
+            .usersByUsernameQuery("select email, password, enabled from user where email=?")
+            .authoritiesByUsernameQuery("select email, role_id from user where email=?")
+            .passwordEncoder(new BCryptPasswordEncoder());
     }
 }

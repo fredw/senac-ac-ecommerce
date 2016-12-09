@@ -6,11 +6,11 @@ import com.ddf.service.OrderService;
 import com.ddf.service.OrderStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -36,34 +36,32 @@ public class PanelOrderController {
     }
 
     @RequestMapping("")
-    public ModelAndView index() {
-        ModelAndView mv = new ModelAndView("panel/order/index");
-        mv.addObject("orders", this.orderService.findAllOrderById());
-        return mv;
+    public String index(Model model) {
+        model.addAttribute("orders", this.orderService.findAllOrderById());
+        return "panel/order/index";
     }
 
     @RequestMapping("/{id}")
-    public ModelAndView form(@PathVariable Long id) {
+    public String form(@PathVariable Long id, Model model) {
         Order order = this.orderService.get(id);
-        ModelAndView mv = new ModelAndView("panel/order/form");
-        mv.addObject("statuses", this.orderStatusService.findAll());
-        mv.addObject("order", order);
-        mv.addObject("orderItens", this.orderItemService.findByOrder(order));
-        return mv;
+        model.addAttribute("statuses", this.orderStatusService.findAll());
+        model.addAttribute("order", order);
+        model.addAttribute("orderItens", this.orderItemService.findByOrder(order));
+        return "panel/order/form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ModelAndView formSave(
+    public String formSave(
         @Valid Order order,
-        BindingResult result
+        BindingResult result,
+        Model model
     ) {
         if (result.hasErrors()) {
-            ModelAndView mv = new ModelAndView("panel/order/form");
-            mv.addObject("order", order);
-            return mv;
+            model.addAttribute("order", order);
+            return "panel/order/form";
         }
 
         this.orderService.save(order);
-        return new ModelAndView("redirect:/painel/pedidos");
+        return "redirect:/painel/pedidos";
     }
 }

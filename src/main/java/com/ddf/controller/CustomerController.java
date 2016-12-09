@@ -5,109 +5,111 @@ import com.ddf.domain.Role;
 import com.ddf.domain.User;
 import com.ddf.service.CustomerService;
 import com.ddf.service.RoleService;
+import com.ddf.service.UserService;
+import com.ddf.service.exception.UserEmailDuplicatedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final UserService userService;
     private final RoleService roleService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, RoleService roleService) {
+    public CustomerController(
+        CustomerService customerService,
+        UserService userService,
+        RoleService roleService
+    ) {
         this.customerService = customerService;
+        this.userService = userService;
         this.roleService = roleService;
     }
 
     @RequestMapping("/cadastro")
-    public ModelAndView registerIndex() {
-        User user = new User();
-        user.setRole(this.roleService.get(Role.CUSTOMER));
-        Customer customer = new Customer();
-        customer.setUser(user);
-        ModelAndView mv = new ModelAndView("customer/register");
-        mv.addObject("customer", customer);
-        return mv;
+    public String registerIndex(Model model) {
+        model.addAttribute("role", this.roleService.get(Role.CUSTOMER));
+        model.addAttribute("user", new User());
+        return "customer/register";
     }
 
     @RequestMapping(value = "/cadastro", method = RequestMethod.POST)
-    public ModelAndView registerSubmit(
-        Customer customer,
-        BindingResult resultCustomer
-        //,User user,
-        //BindingResult resultUser
+    public String registerSubmit(
+        HttpServletRequest request,
+        @RequestParam(value = "redirect", required = false) String redirect,
+        @Valid User user,
+        BindingResult result,
+        Model model
     ) {
-        // # Customer
-        //System.out.println(customer.getUser().getName());
-        //System.out.println(customer.getUser().getEmail());
-        //System.out.println(customer.getUser().getPassword());
-        //System.out.println(customer.getUser().getRole().getId());
-        // # User
-        //System.out.println(user.getName());
-        //System.out.println(user.getEmail());
-        //System.out.println(user.getPassword());
-        //System.out.println(user.getRole().getId());
+        model.addAttribute("role", this.roleService.get(Role.CUSTOMER));
+        model.addAttribute("user", user);
 
-        ModelAndView mv = new ModelAndView("customer/register");
-        mv.addObject("customer", customer);
-
-        if (resultCustomer.hasErrors()) {
-        //if (resultCustomer.hasErrors() || resultUser.hasErrors()) {
-            //System.out.println(resultCustomer);
-            //System.out.println(resultUser);
-            return mv;
+        if (result.hasErrors()) {
+            return "customer/register";
         }
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         try {
+            // Create the user
+            user.setEnabled(true);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            this.userService.save(user);
+            // Create the customer
+            Customer customer = new Customer();
+            customer.setUser(user);
             this.customerService.save(customer);
-        } catch (Exception e) {
-            return mv;
+        } catch (UserEmailDuplicatedException ex) {
+            model.addAttribute("error", "E-mail already exists");
+            return "customer/register";
         }
 
-        return new ModelAndView("customer/success");
+        // To be able to redirect to other page after register, is necessary to set user looged manualy (but I don't know how to do this)
+        /*if (redirect != null) {
+            return "redirect:" + redirect;
+        }*/
+
+        return "customer/success";
     }
 
     @RequestMapping("/login")
-    public ModelAndView login() {
-
-        ModelAndView mv = new ModelAndView("customer/login");
-
-        try {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            mv.addObject("user", user);
-        } catch (Exception ignored) {}
-
-        return mv;
+    public String login(Model model, HttpServletRequest request, @AuthenticationPrincipal UserDetails userDetails) {
+        request.getSession().setAttribute("redirect", request.getParameter("redirect"));
+        if (userDetails != null) {
+            model.addAttribute("user", this.userService.getByUserDetail(userDetails));
+        }
+        return "customer/login";
     }
 
     @RequestMapping("/minhas-compras")
-    public ModelAndView myOrders() {
+    public String myOrders(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Get logged customer
+        User user = this.userService.getByUserDetail(userDetails);
+        Customer customer = this.customerService.getByUser(user);
 
-        // @TODO: alterar para retornar somente as compras do usuário logado
-        Customer customer = this.customerService.get(1L);
-
-        ModelAndView mv = new ModelAndView("customer/order/index");
-        mv.addObject("orders", this.customerService.getOrders(customer));
-        return mv;
+        model.addAttribute("orders", this.customerService.getOrders(customer));
+        return "customer/order/index";
     }
 
     @RequestMapping("/minhas-compras/{orderId}")
-    public ModelAndView myOrders(@PathVariable Long orderId) throws Exception {
+    public String myOrders(@PathVariable Long orderId, Model model, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        // Get logged customer
+        User user = this.userService.getByUserDetail(userDetails);
+        Customer customer = this.customerService.getByUser(user);
 
-        // @TODO: alterar para retornar somente as compras do usuário logado
-        Customer customer = this.customerService.get(1L);
-
-        ModelAndView mv = new ModelAndView("customer/order/detail");
-        mv.addObject("order", this.customerService.getOrder(customer, orderId));
-        return mv;
+        model.addAttribute("order", this.customerService.getOrder(customer, orderId));
+        return "customer/order/detail";
     }
 }

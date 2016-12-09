@@ -5,10 +5,10 @@ import com.ddf.domain.Product;
 import com.ddf.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -30,45 +30,42 @@ public class PanelProductController {
     }
 
     @RequestMapping("")
-    public ModelAndView index() {
-        ModelAndView mv = new ModelAndView("panel/product/index");
-        mv.addObject("products", this.productService.findAll());
-        return mv;
+    public String index(Model model) {
+        model.addAttribute("products", this.productService.findAll());
+        return "panel/product/index";
     }
 
     @RequestMapping(value = "/excluir", method = RequestMethod.POST)
-    public ModelAndView indexDelete(@RequestParam(value="code[]", required=false) List<String> codes) {
+    public String indexDelete(@RequestParam(value="code[]", required=false) List<String> codes) {
         codes.forEach(code -> {
             this.productService.delete(this.productService.getByCode(code));
         });
-        return new ModelAndView("redirect:/painel/produtos");
+        return "redirect:/painel/produtos";
     }
 
     @RequestMapping("/novo")
-    public ModelAndView formNew() {
-        ModelAndView mv = new ModelAndView("panel/product/form");
-        mv.addObject("product", new Product());
-        return mv;
+    public String formNew(Model model) {
+        model.addAttribute("product", new Product());
+        return "panel/product/form";
     }
 
     @RequestMapping("/{code}")
-    public ModelAndView formDetail(@PathVariable String code) {
-        ModelAndView mv = new ModelAndView("panel/product/form");
-        mv.addObject("product", this.productService.getByCode(code));
-        return mv;
+    public String formDetail(@PathVariable String code, Model model) {
+        model.addAttribute("product", this.productService.getByCode(code));
+        return "panel/product/form";
     }
 
     @RequestMapping(value = {"/novo", "/{code}"}, method = RequestMethod.POST)
-    public ModelAndView formSave(
+    public String formSave(
         @Valid Product product,
         BindingResult result,
         @RequestParam("image") MultipartFile image,
-        @RequestParam("file") MultipartFile file
+        @RequestParam("file") MultipartFile file,
+        Model model
     ) throws IOException {
         if (result.hasErrors()) {
-            ModelAndView mv = new ModelAndView("panel/product/form");
-            mv.addObject("product", product);
-            return mv;
+            model.addAttribute("product", product);
+            return "panel/product/form";
         }
 
         /*if (!file.isEmpty()) {
@@ -79,6 +76,6 @@ public class PanelProductController {
         }*/
 
         this.productService.save(product);
-        return new ModelAndView("redirect:/painel/produtos");
+        return "redirect:/painel/produtos";
     }
 }

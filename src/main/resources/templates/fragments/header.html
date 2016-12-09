@@ -15,17 +15,17 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <li th:if="${#httpServletRequest.remoteUser != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Usuário">Usuário <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/minhas-compras}">Minhas compras</a></li>
-                            <li><a th:href="@{/logout}">Sair</a></li>
+                            <li><a href="#" onclick="$.post('/logout', function () { window.location.reload(); }); return false;">Sair</a></li>
                         </ul>
                     </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'active' : ''}" th:if="${#httpServletRequest.remoteUser == null}">
                         <a th:href="@{/login}" title="Entrar">Entrar</a>
                     </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/cadastro' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/cadastro' ? 'active' : ''}"  th:if="${#httpServletRequest.remoteUser == null}">
                         <a th:href="@{/cadastro}" title="Cadastrar">Cadastrar</a>
                     </li>
                     <li th:classappend="${#httpServletRequest.getRequestURI() == '/carrinho' ? 'active' : ''}">

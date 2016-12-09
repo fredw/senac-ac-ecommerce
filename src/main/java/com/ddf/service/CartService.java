@@ -11,11 +11,9 @@ import java.util.Date;
 public class CartService {
 
     private final OrderRepository orderRepository;
-
     private final OrderItemRepository orderItemRepository;
-
     private final OrderStatusRepository orderStatusRepository;
-
+    private final CartRepository cartRepository;
     private final CartStatusRepository cartStatusRepository;
 
     @Autowired
@@ -23,11 +21,13 @@ public class CartService {
         OrderRepository orderRepository,
         OrderItemRepository orderItemRepository,
         OrderStatusRepository orderStatusRepository,
+        CartRepository cartRepository,
         CartStatusRepository cartStatusRepository
     ) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.orderStatusRepository = orderStatusRepository;
+        this.cartRepository = cartRepository;
         this.cartStatusRepository = cartStatusRepository;
     }
 
@@ -52,6 +52,7 @@ public class CartService {
 
         // Change status of cart to "bought"
         cart.setStatus(this.cartStatusRepository.findOne(CartStatus.BOUGHT));
+        this.cartRepository.save(cart);
 
         return order;
     }
