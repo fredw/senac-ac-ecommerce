@@ -43,12 +43,17 @@ public class OrderService {
     public Order save(Order order) {
 
         // Order from database
-        Order orderBefore = this.get(order.getId());
+        Order orderBefore = null;
+        Long statusBefore = null;
+        if (order.getId() != null) {
+            orderBefore = this.get(order.getId());
+            statusBefore = orderBefore.getStatus().getId();
+        }
 
         this.orderRepository.save(order);
 
         if (orderBefore != null
-            && !Objects.equals(orderBefore.getStatus().getId(), OrderStatus.PAYMENT_CONFIRMED)
+            && !Objects.equals(statusBefore, OrderStatus.PAYMENT_CONFIRMED)
             && Objects.equals(order.getStatus().getId(), OrderStatus.PAYMENT_CONFIRMED)
         ) {
             String text = "Olá! O pagamento da sua compra #" + order.getId() + " foi aprovado. Você já pode fazer o download do material";

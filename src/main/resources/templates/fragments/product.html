@@ -11,7 +11,7 @@
         </div>
         <!--/*@thymesVar id="product" type="com.ddf.domain.Product"*/-->
         <div th:each="product: ${products}" class="product col-xs-6 col-sm-4 col-md-3">
-            <img src="http://lorempixel.com/300/200/" th:alt="${product.name}" class="img-responsive"/>
+            <img th:src="@{'image/' + ${product.image} (width=300,height=200)}" th:alt="${product.name}" class="img-responsive"/>
             <p class="title">
                 #<span th:text="${product.code}"></span> -
                 <span th:text="${product.name}"></span>

@@ -31,6 +31,7 @@
 
 .products .product img {
     margin-bottom: 10px;
+    border: 1px solid #CCC;
 }
 
 .products .product .title {

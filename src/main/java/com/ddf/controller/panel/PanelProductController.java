@@ -3,10 +3,7 @@ package com.ddf.controller.panel;
 import com.ddf.Application;
 import com.ddf.domain.Product;
 import com.ddf.service.ProductService;
-import com.ddf.service.exception.ProductCodeDuplicatedException;
-import com.ddf.service.exception.ProductFileNotNullException;
-import com.ddf.service.exception.ProductImageInvalidException;
-import com.ddf.service.exception.ProductImageNotNullException;
+import com.ddf.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,13 +78,16 @@ public class PanelProductController {
             String imageName = "";
 
             if (!file.isEmpty()) {
+                if (!file.getContentType().equals("application/pdf")) {
+                    throw new ProductFileInvalidException("File need to be a PDF");
+                }
                 fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
                 product.setFile(fileName);
             }
 
             if (!image.isEmpty()) {
-                if (!image.getContentType().equals("image/jpeg")) {
-                    throw new ProductImageInvalidException("Image file need to be a image/jpeg");
+                if (!image.getContentType().matches("image/jpeg|image/png")) {
+                    throw new ProductImageInvalidException("Image file need to be a jpeg or png");
                 }
                 imageName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
                 product.setImage(imageName);
@@ -105,7 +105,11 @@ public class PanelProductController {
                 Files.write(imagePath, image.getBytes());
             }
 
-        } catch (ProductCodeDuplicatedException | ProductImageInvalidException | ProductImageNotNullException | ProductFileNotNullException ex) {
+        } catch (ProductCodeDuplicatedException
+                | ProductFileInvalidException
+                | ProductImageInvalidException
+                | ProductImageNotNullException
+                | ProductFileNotNullException ex) {
             model.addAttribute("error", ex.getMessage());
             return "panel/product/form";
         }

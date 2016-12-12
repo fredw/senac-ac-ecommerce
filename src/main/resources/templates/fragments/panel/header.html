@@ -7,13 +7,13 @@
         <div class="container">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/panel' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/painel' ? 'active' : ''}">
                         <a th:href="@{/painel}">Home</a>
                     </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/panel/produtos' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/painel/produtos' ? 'active' : ''}">
                         <a th:href="@{/painel/produtos}">Produtos</a>
                     </li>
-                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/panel/pedidos' ? 'active' : ''}">
+                    <li th:classappend="${#httpServletRequest.getRequestURI() == '/painel/pedidos' ? 'active' : ''}">
                         <a th:href="@{/painel/pedidos}">Pedidos</a>
                     </li>
                 </ul>
